@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090817">
+<title>Ashtan Bot — Anime Card Club</title>
+<style>
+:root{--bg:#090817;--panel:#141329;--panel2:#1b1936;--text:#f4f1ff;--muted:#aaa6c7;--cyan:#43e8ff;--pink:#ff4fca;--gold:#ffd66b;--line:#302b50}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% -10%,#29205b 0,transparent 42%),radial-gradient(ellipse at 100% 10%,#3b1647 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{padding:24px 18px 14px;max-width:1000px;margin:auto}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--pink));color:#090817;font-size:25px;box-shadow:0 0 25px #43e8ff55}.brand h1{font-size:23px;margin:0;letter-spacing:.3px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+main{max-width:1000px;margin:auto;padding:8px 18px 40px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.stat,.panel{background:linear-gradient(150deg,#191731ee,#111022ee);border:1px solid var(--line);border-radius:18px}.stat{padding:13px}.stat small{display:block;color:var(--muted);font-size:11px}.stat b{font-size:21px}.tabs{display:flex;gap:8px;overflow:auto;padding:5px 0 13px}.tab{border:1px solid var(--line);background:#17152d;color:var(--muted);padding:10px 14px;border-radius:12px;white-space:nowrap;font-weight:650}.tab.active{color:#081018;background:linear-gradient(90deg,var(--cyan),#a6f7ff);border-color:transparent}
+.panel{padding:17px;margin-bottom:14px}.panel h2{font-size:18px;margin:0 0 5px}.sub{color:var(--muted);margin:0 0 15px;font-size:13px}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;align-items:center}.hero-art{min-height:180px;border-radius:15px;background:radial-gradient(circle at 50% 40%,#533c93,#211a49 55%,#111022);display:grid;place-items:center;font-size:78px;text-shadow:0 0 24px #ff4fca}.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:800;background:linear-gradient(90deg,var(--cyan),#a5f5ff);color:#071018;cursor:pointer}.btn.secondary{background:#262243;color:var(--text);border:1px solid #49416e}.btn:disabled{opacity:.45;cursor:not-allowed}.actions{display:flex;gap:9px;flex-wrap:wrap}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px}.card{position:relative;overflow:hidden;border:1px solid #49416e;border-radius:16px;min-height:220px;padding:10px;background:linear-gradient(160deg,#28204f,#111022 75%);display:flex;flex-direction:column;justify-content:space-between}.card .art{height:125px;border-radius:11px;display:grid;place-items:center;font-size:66px;background:radial-gradient(circle at 50% 45%,#51427c,#17142e 70%)}.card h3{font-size:14px;margin:8px 0 0}.card small{color:var(--muted)}.rarity{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:900}.Common{color:#c5c3d6}.Rare{color:var(--cyan)}.Epic{color:#d49aff}.Legendary{color:var(--gold)}.Mythic{color:#ff78ce}.card.Rare{box-shadow:inset 0 0 18px #43e8ff22}.card.Epic{box-shadow:inset 0 0 18px #bb70ff33}.card.Legendary,.card.Mythic{border-color:#a88a50;box-shadow:0 0 16px #ffd66b22,inset 0 0 20px #ffd66b18}
+.hidden{display:none!important}.notice{padding:12px;border-radius:12px;background:#1b2940;border:1px solid #28516a;color:#c9f7ff;margin:12px 0;font-size:13px}.empty{color:var(--muted);padding:25px;text-align:center;border:1px dashed #484166;border-radius:14px}.profile-row{display:flex;align-items:center;gap:12px}.avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#28204f;font-size:25px}
+footer{text-align:center;color:#77728f;font-size:11px;padding:20px}
+@media(max-width:600px){.hero{grid-template-columns:1fr}.hero-art{min-height:130px}.stats{gap:7px}.stat{padding:10px}.stat b{font-size:18px}.panel{padding:14px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">✦</div><div><h1>ASHTAN BOT</h1><p>ANIME CARD CLUB · DARK NEON EDITION</p></div></div></header>
+<main>
+<section class="stats">
+ <div class="stat"><small>YOUR CARDS</small><b id="total">0</b></div>
+ <div class="stat"><small>UNIQUE CARDS</small><b id="unique">0</b></div>
+ <div class="stat"><small>COINS</small><b id="coins">100</b></div>
+</section>
+<nav class="tabs">
+ <button class="tab active" data-tab="home">⌂ Home</button><button class="tab" data-tab="collection">▣ Collection</button><button class="tab" data-tab="profile">♙ Profile</button>
+</nav>
+<section id="home" class="panel">
+ <div class="hero"><div><h2>Welcome to the card club ✨</h2><p class="sub">Collect original anime-inspired heroes, discover rare drops and build your collection.</p><div class="actions"><button class="btn" id="drop">✦ Drop a card · 20 coins</button><button class="btn secondary" id="daily">🎁 Daily reward</button></div><p class="sub" id="message" aria-live="polite">Your first card is waiting…</p></div><div class="hero-art">🌌</div></div>
+</section>
+<section id="collection" class="panel hidden"><h2>Your collection</h2><p class="sub">Every card you have collected appears here. Duplicates count too!</p><div id="cardGrid" class="cards"></div></section>
+<section id="profile" class="panel hidden"><div class="profile-row"><div class="avatar">⚡</div><div><h2 id="playerName">Ashtan</h2><p class="sub">Rookie collector · Level <span id="level">1</span></p></div></div><hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><p>Cards collected: <b id="profileTotal">0</b></p><p>Daily rewards claimed: <b id="dailyCount">0</b></p><button class="btn secondary" id="reset">Reset local game</button><p class="sub" style="margin-top:12px">Your game progress is saved in this browser on this device.</p></section>
+<div class="notice">Prototype note: this first version saves progress on this device only. Group accounts, shared trading and live multiplayer need an online database and hosting in the next version.</div>
+</main>
+<footer>ASHTAN BOT · Original anime-inspired characters · Have fun collecting</footer>
+<script>
+const characters=[
+{name:"Kairo, Star Runner",emoji:"⚡",rarity:"Common",power:12},
+{name:"Mika, Moon Weaver",emoji:"🌙",rarity:"Common",power:15},
+{name:"Ren, Sky Guardian",emoji:"🗡️",rarity:"Rare",power:28},
+{name:"Hana, Spirit Fox",emoji:"🦊",rarity:"Rare",power:32},
+{name:"Akio, Flame Keeper",emoji:"🔥",rarity:"Epic",power:55},
+{name:"Yumi, Crystal Mage",emoji:"💎",rarity:"Epic",power:59},
+{name:"Raiden, Storm King",emoji:"🌩️",rarity:"Legendary",power:88},
+{name:"Astra, Celestial One",emoji:"🌠",rarity:"Mythic",power:100}
+];
+const key="ashtanBotGameV1";
+let state=JSON.parse(localStorage.getItem(key)||"null")||{coins:100,cards:[],dailyDate:"",dailyCount:0};
+function save(){localStorage.setItem(key,JSON.stringify(state));render()}
+function render(){
+ document.getElementById("total").textContent=state.cards.length;
+ document.getElementById("unique").textContent=new Set(state.cards.map(c=>c.name)).size;
+ document.getElementById("coins").textContent=state.coins;
+ document.getElementById("profileTotal").textContent=state.cards.length;
+ document.getElementById("dailyCount").textContent=state.dailyCount;
+ document.getElementById("level").textContent=Math.floor(state.cards.length/5)+1;
+ const grid=document.getElementById("cardGrid");
+ if(!state.cards.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1">No cards yet. Head to Home and make your first drop!</div>';return}
+ grid.innerHTML=state.cards.slice().reverse().map(c=>`<article class="card ${c.rarity}"><div><div class="art">${c.emoji}</div><h3>${c.name}</h3></div><div><span class="rarity ${c.rarity}">${c.rarity}</span><small style="float:right">POW ${c.power}</small></div></article>`).join("");
+}
+function say(t){document.getElementById("message").textContent=t}
+document.getElementById("drop").onclick=()=>{
+ if(state.coins<20){say("Not enough coins. Claim your daily reward for more!");return}
+ state.coins-=20;
+ const roll=Math.random()*100;
+ const pool=roll<2?["Mythic"]:roll<8?["Legendary"]:roll<25?["Epic"]:roll<55?["Rare"]:["Common"];
+ const options=characters.filter(c=>pool.includes(c.rarity));
+ const c=options[Math.floor(Math.random()*options.length)];
+ state.cards.push(c);save();say(`You pulled ${c.name} — ${c.rarity}! ${c.emoji}`);
+};
+document.getElementById("daily").onclick=()=>{
+ const today=new Date().toLocaleDateString();
+ if(state.dailyDate===today){say("You've already claimed today's reward. Come back tomorrow!");return}
+ state.dailyDate=today;state.dailyCount++;state.coins+=60;save();say("Daily reward claimed: +60 coins! 🎁");
+};
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));
+ ["home","collection","profile"].forEach(id=>document.getElementById(id).classList.toggle("hidden",id!==b.dataset.tab));
+});
+document.getElementById("reset").onclick=()=>{
+ if(confirm("Reset all cards, coins and rewards on this device?")){state={coins:100,cards:[],dailyDate:"",dailyCount:0};save();say("Your game has been reset.")}
+};
+render();
+</script>
+</body>
+</html>
