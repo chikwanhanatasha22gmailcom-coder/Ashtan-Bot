@@ -1,0 +1,129 @@
+
+const cards = [
+  { name: "Kairo Star Runner", rarity: "Common", emoji: "🌟" },
+  { name: "Mika Moon Weaver", rarity: "Common", emoji: "🌙" },
+  { name: "Ren Sky Guardian", rarity: "Rare", emoji: "🪽" },
+  { name: "Hana Spirit Fox", rarity: "Rare", emoji: "🦊" },
+  { name: "Akio Flame Keeper", rarity: "Epic", emoji: "🔥" },
+  { name: "Yumi Crystal Mage", rarity: "Epic", emoji: "💎" },
+  { name: "Raiden Storm King", rarity: "Legendary", emoji: "⚡" },
+  { name: "Astra Celestial One", rarity: "Mythic", emoji: "✨" }
+];
+
+const players = {};
+
+function getPlayer(id, name = "Player") {
+  if (!players[id]) {
+    players[id] = {
+      name,
+      coins: 100,
+      collection: [],
+      lastDaily: null,
+      summons: 0
+    };
+  }
+  return players[id];
+}
+
+function drawCard() {
+  const roll = Math.random() * 100;
+
+  if (roll < 2) return cards[7];
+  if (roll < 8) return cards[6];
+  if (roll < 23) return cards[4 + Math.floor(Math.random() * 2)];
+  if (roll < 50) return cards[2 + Math.floor(Math.random() * 2)];
+  return cards[Math.floor(Math.random() * 2)];
+}
+
+function handleCommand(userId, username, message) {
+  const command = message.trim().toLowerCase();
+  const player = getPlayer(userId, username);
+
+  if (command === "!help" || command === "!commands") {
+    return `🎴 ASHTAN BOT COMMANDS
+
+!help - Show commands
+!ping - Check bot status
+!profile - View your profile
+!daily - Claim 60 coins
+!balance - Check your coins
+!summon - Draw an anime card
+!collection - View your cards
+!leaderboard - Top players`;
+  }
+
+  if (command === "!ping") {
+    return "🏓 ASHTAN BOT is online!";
+  }
+
+  if (command === "!profile") {
+    return `👤 ${player.name}'s Profile
+🪙 Coins: ${player.coins}
+🎴 Cards: ${player.collection.length}
+✨ Summons: ${player.summons}`;
+  }
+
+  if (command === "!balance") {
+    return `🪙 You have ${player.coins} coins.`;
+  }
+
+  if (command === "!daily") {
+    const today = new Date().toISOString().slice(0, 10);
+
+    if (player.lastDaily === today) {
+      return "⏳ You already claimed your daily reward!";
+    }
+
+    player.lastDaily = today;
+    player.coins += 60;
+
+    return `🎁 You received 60 coins!
+🪙 Balance: ${player.coins}`;
+  }
+
+  if (command === "!summon") {
+    if (player.coins < 20) {
+      return "❌ You need 20 coins! Try !daily";
+    }
+
+    player.coins -= 20;
+
+    const card = drawCard();
+    player.collection.push(card);
+    player.summons++;
+
+    return `🎴 CARD SUMMONED!
+
+${card.emoji} ${card.name}
+⭐ Rarity: ${card.rarity}
+🪙 Coins left: ${player.coins}`;
+  }
+
+  if (command === "!collection") {
+    if (player.collection.length === 0) {
+      return "📭 Your collection is empty. Use !summon!";
+    }
+
+    return `🎴 ${player.name}'s Collection:\n` +
+      player.collection.map(card =>
+        `${card.emoji} ${card.name} (${card.rarity})`
+      ).join("\n");
+  }
+
+  if (command === "!leaderboard") {
+    const ranking = Object.entries(players)
+      .sort((a, b) =>
+        b[1].collection.length - a[1].collection.length
+      )
+      .slice(0, 10);
+
+    return "🏆 ASHTAN BOT LEADERBOARD\n" +
+      ranking.map(([id, p], index) =>
+        `${index + 1}. ${p.name} - ${p.collection.length} cards`
+      ).join("\n");
+  }
+
+  return "❓ Unknown command. Type !help";
+}
+
+module.exports = { handleCommand, players, cards };
